@@ -53,20 +53,20 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
         <button
           onClick={fetchData}
-          className="btn btn-secondary"
+          className="btn btn-secondary w-full sm:w-auto"
         >
           Refresh
         </button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
         <StatCard
           title="Total Employees"
           value={todayData?.total_employees || 0}
@@ -102,8 +102,8 @@ const Dashboard = () => {
       {/* Chart */}
       {statsData && statsData.daily_stats.length > 0 && (
         <div className="card">
-          <h2 className="text-xl font-semibold mb-4">Attendance Trend (Last 7 Days)</h2>
-          <ResponsiveContainer width="100%" height={300}>
+          <h2 className="text-base sm:text-xl font-semibold mb-3 sm:mb-4">Attendance Trend (Last 7 Days)</h2>
+          <ResponsiveContainer width="100%" height={250} className="sm:h-[300px]">
             <BarChart data={statsData.daily_stats}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
@@ -120,12 +120,14 @@ const Dashboard = () => {
 
       {/* Today's Attendance Table */}
       <div className="card">
-        <h2 className="text-xl font-semibold mb-4">Today's Attendance</h2>
+        <h2 className="text-base sm:text-xl font-semibold mb-3 sm:mb-4">Today's Attendance</h2>
         
         {todayData?.attendance_logs.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No attendance records for today</p>
+          <p className="text-gray-500 text-center py-8 text-sm sm:text-base">No attendance records for today</p>
         ) : (
-          <div className="overflow-x-auto">
+          <>
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -177,6 +179,38 @@ const Dashboard = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-3">
+            {todayData?.attendance_logs.map((log) => (
+              <div key={log.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="font-semibold text-gray-900">{log.employee_name}</h3>
+                    <p className="text-sm text-gray-500">{log.employee_id}</p>
+                  </div>
+                  <span className={`px-2 py-1 text-xs font-semibold rounded-full whitespace-nowrap ${getStatusColor(log.status)}`}>
+                    {log.status}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <p className="text-gray-500 text-xs">Department</p>
+                    <p className="font-medium text-gray-900">{log.department}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-xs">In Time</p>
+                    <p className="font-medium text-gray-900">{formatTime(log.in_time)}</p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-gray-500 text-xs">Out Time</p>
+                    <p className="font-medium text-gray-900">{formatTime(log.out_time)}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          </>
         )}
       </div>
     </div>
@@ -192,14 +226,14 @@ interface StatCardProps {
 }
 
 const StatCard = ({ title, value, icon: Icon, color }: StatCardProps) => (
-  <div className="card">
+  <div className="card hover:shadow-lg transition-shadow">
     <div className="flex items-center">
-      <div className={`${color} p-3 rounded-lg`}>
-        <Icon className="h-6 w-6 text-white" />
+      <div className={`${color} p-2 sm:p-3 rounded-lg flex-shrink-0`}>
+        <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
       </div>
-      <div className="ml-4">
-        <p className="text-sm font-medium text-gray-600">{title}</p>
-        <p className="text-2xl font-bold text-gray-900">{value}</p>
+      <div className="ml-3 sm:ml-4 min-w-0">
+        <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">{title}</p>
+        <p className="text-xl sm:text-2xl font-bold text-gray-900">{value}</p>
       </div>
     </div>
   </div>

@@ -77,12 +77,12 @@ const AttendanceHistory = () => {
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Attendance History</h1>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Attendance History</h1>
         <button
           onClick={handleExport}
-          className="btn btn-primary"
+          className="btn btn-primary w-full sm:w-auto"
         >
           <Download className="w-4 h-4 mr-2" />
           Export CSV
@@ -91,8 +91,8 @@ const AttendanceHistory = () => {
 
       {/* Filters */}
       <div className="card">
-        <h2 className="text-lg font-semibold mb-4">Filters</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Filters</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <div>
             <label htmlFor="startDate" className="label">
               Start Date
@@ -130,7 +130,7 @@ const AttendanceHistory = () => {
               className="input"
             />
           </div>
-          <div className="flex items-end space-x-2">
+          <div className="flex items-end gap-2 sm:col-span-2 lg:col-span-1">
             <button
               onClick={handleSearch}
               className="btn btn-primary flex-1"
@@ -150,8 +150,8 @@ const AttendanceHistory = () => {
 
       {/* Results */}
       <div className="card">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">
+        <div className="flex justify-between items-center mb-3 sm:mb-4">
+          <h2 className="text-base sm:text-lg font-semibold">
             Attendance Records ({total} total)
           </h2>
         </div>
@@ -172,7 +172,8 @@ const AttendanceHistory = () => {
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
@@ -237,21 +238,60 @@ const AttendanceHistory = () => {
               </table>
             </div>
 
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-3">
+              {logs.map((log) => (
+                <div key={log.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h3 className="font-semibold text-gray-900">{log.employee_name}</h3>
+                      <p className="text-sm text-gray-500">{log.employee_id}</p>
+                    </div>
+                    <span className={`px-2 py-1 text-xs font-semibold rounded-full whitespace-nowrap ${getStatusColor(log.status)}`}>
+                      {log.status}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <p className="text-gray-500 text-xs">Date</p>
+                      <p className="font-medium text-gray-900">{formatDate(log.log_date)}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500 text-xs">Department</p>
+                      <p className="font-medium text-gray-900">{log.department}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500 text-xs">In Time</p>
+                      <p className="font-medium text-gray-900">{formatTime(log.in_time)}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500 text-xs">Out Time</p>
+                      <p className="font-medium text-gray-900">{formatTime(log.out_time)}</p>
+                    </div>
+                    <div className="col-span-2">
+                      <p className="text-gray-500 text-xs">Duration</p>
+                      <p className="font-medium text-gray-900">{formatDuration(log.duration)}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex justify-between items-center mt-6 pt-4 border-t">
-                <div className="text-sm text-gray-700">
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mt-4 sm:mt-6 pt-4 border-t">
+                <div className="text-xs sm:text-sm text-gray-700 order-2 sm:order-1">
                   Showing {currentPage * limit + 1} to {Math.min((currentPage + 1) * limit, total)} of {total} results
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex flex-wrap justify-center gap-2 order-1 sm:order-2">
                   <button
                     onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
                     disabled={currentPage === 0}
-                    className="btn btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="btn btn-secondary text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Previous
                   </button>
-                  <div className="flex items-center space-x-1">
+                  <div className="flex items-center gap-1">
                     {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                       const page = currentPage < 3 ? i : currentPage - 2 + i;
                       if (page >= totalPages) return null;
@@ -259,7 +299,7 @@ const AttendanceHistory = () => {
                         <button
                           key={page}
                           onClick={() => setCurrentPage(page)}
-                          className={`px-3 py-1 rounded ${
+                          className={`px-2 sm:px-3 py-1 rounded text-sm ${
                             currentPage === page
                               ? 'bg-primary-600 text-white'
                               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -273,7 +313,7 @@ const AttendanceHistory = () => {
                   <button
                     onClick={() => setCurrentPage(Math.min(totalPages - 1, currentPage + 1))}
                     disabled={currentPage >= totalPages - 1}
-                    className="btn btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="btn btn-secondary text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Next
                   </button>

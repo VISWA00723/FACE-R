@@ -49,16 +49,16 @@ const EmployeeList = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Employees</h1>
-          <p className="text-gray-600 mt-1">Total: {total} employees</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Employees</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Total: {total} employees</p>
         </div>
         <button
           onClick={fetchEmployees}
           disabled={loading}
-          className="btn btn-secondary"
+          className="btn btn-secondary w-full sm:w-auto"
         >
           <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
           Refresh
@@ -81,7 +81,9 @@ const EmployeeList = () => {
             <p className="text-sm">Start by registering your first employee</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <>
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -144,6 +146,49 @@ const EmployeeList = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-3">
+            {employees.map((employee) => (
+              <div key={employee.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900 text-lg">{employee.name}</h3>
+                    <p className="text-sm text-gray-500 mt-1">{employee.employee_id}</p>
+                  </div>
+                  <button
+                    onClick={() => handleDelete(employee.employee_id, employee.name)}
+                    disabled={deletingId === employee.employee_id}
+                    className="text-red-600 hover:text-red-900 disabled:opacity-50 p-2"
+                    title="Delete employee"
+                  >
+                    {deletingId === employee.employee_id ? (
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-red-600"></div>
+                    ) : (
+                      <Trash2 className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <p className="text-gray-500 text-xs">Department</p>
+                    <p className="font-medium text-gray-900">{employee.department}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-xs">Images</p>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      {employee.image_count}
+                    </span>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-gray-500 text-xs">Registered On</p>
+                    <p className="font-medium text-gray-900">{formatDateTime(employee.created_at)}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          </>
         )}
       </div>
 
@@ -156,8 +201,8 @@ const EmployeeList = () => {
             </svg>
           </div>
           <div className="ml-3">
-            <h3 className="text-sm font-medium text-yellow-800">Important Note</h3>
-            <div className="mt-2 text-sm text-yellow-700">
+            <h3 className="text-sm sm:text-base font-medium text-yellow-800">Important Note</h3>
+            <div className="mt-2 text-xs sm:text-sm text-yellow-700">
               <ul className="list-disc list-inside space-y-1">
                 <li>Deleting an employee will remove their face embeddings and all attendance records</li>
                 <li>This action cannot be undone</li>
