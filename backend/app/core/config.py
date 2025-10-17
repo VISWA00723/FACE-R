@@ -29,10 +29,17 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     
     # Face Recognition
-    FACE_RECOGNITION_THRESHOLD: float = 0.6
+    # Cosine similarity threshold (0.0 to 1.0, where 1.0 = identical)
+    # Recommended: 0.3-0.4 (lenient), 0.5-0.6 (balanced), 0.7+ (strict)
+    FACE_RECOGNITION_THRESHOLD: float = 0.5
     MIN_FACE_SIZE: int = 20
     EMBEDDING_SIZE: int = 512
     MAX_IMAGES_PER_EMPLOYEE: int = 50
+    
+    # Data Augmentation for CCTV robustness
+    USE_AUGMENTATION: bool = True
+    AUGMENTATIONS_PER_IMAGE: int = 2  # Number of augmented versions per original
+    INCLUDE_ORIGINAL_IMAGES: bool = True  # Include original + augmented
     
     # FAISS
     USE_FAISS: bool = True
