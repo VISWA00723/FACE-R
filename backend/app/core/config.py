@@ -39,7 +39,7 @@ class Settings(BaseSettings):
     FAISS_INDEX_PATH: str = "./data/faiss_index.bin"
     
     # CORS
-    CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173"
+    CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173,http://192.168.5.28:5173,https://wnm8dbn7-5173.inc1.devtunnels.ms"
     
     @property
     def cors_origins_list(self) -> List[str]:

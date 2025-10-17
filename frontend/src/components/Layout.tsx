@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
-import { Home, UserPlus, Calendar, Users, Menu, X } from 'lucide-react';
+import { Home, UserPlus, Calendar, Users, Menu, X, CheckCircle2 } from 'lucide-react';
 
 const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -8,6 +8,7 @@ const Layout = () => {
   const navItems = [
     { path: '/dashboard', icon: Home, label: 'Dashboard' },
     { path: '/register', icon: UserPlus, label: 'Register Employee' },
+    { path: '/verify', icon: CheckCircle2, label: 'Verify Face' },
     { path: '/attendance', icon: Calendar, label: 'Attendance History' },
     { path: '/employees', icon: Users, label: 'Employees' },
   ];

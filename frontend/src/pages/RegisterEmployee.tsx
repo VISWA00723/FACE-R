@@ -179,11 +179,16 @@ const RegisterEmployee = () => {
                   audio={false}
                   screenshotFormat="image/jpeg"
                   className="w-full h-full object-cover"
+                  mirrored={true}
+                  screenshotQuality={0.92}
                   videoConstraints={{
-                    width: 1280,
-                    height: 720,
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 },
                     facingMode: 'user',
+                    aspectRatio: 16 / 9,
                   }}
+                  forceScreenshotSourceSize={false}
+                  imageSmoothing={true}
                 />
                 <div className="absolute bottom-3 sm:bottom-4 left-1/2 transform -translate-x-1/2">
                   <button
