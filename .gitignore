@@ -64,6 +64,6 @@ frontend/dist/
 *.sqlite3
 
 # Models
-models/
+/models/  # Only ignore root-level models directory
 *.onnx
 *.pth
