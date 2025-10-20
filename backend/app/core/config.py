@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str
     DB_USER: str = "postgres"
-    DB_PASSWORD: str = "password"
+    DB_PASSWORD: str = "123"
     DB_HOST: str = "localhost"
     DB_PORT: int = 5432
     DB_NAME: str = "face_recognition_db"
