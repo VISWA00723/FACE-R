@@ -89,7 +89,7 @@ const Dashboard = () => {
           title="Currently IN"
           value={todayData?.in_count || 0}
           icon={LogIn}
-          color="bg-purple-500"
+          color="bg-teal-500"
         />
         <StatCard
           title="Left Office (OUT)"
@@ -111,7 +111,7 @@ const Dashboard = () => {
               <Tooltip />
               <Legend />
               <Bar dataKey="present" fill="#10b981" name="Present" />
-              <Bar dataKey="in" fill="#8b5cf6" name="IN" />
+              <Bar dataKey="in" fill="#14b8a6" name="IN" />
               <Bar dataKey="out" fill="#f97316" name="OUT" />
             </BarChart>
           </ResponsiveContainer>

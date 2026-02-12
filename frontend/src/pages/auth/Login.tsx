@@ -29,7 +29,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-cyan-950 p-6 flex items-center justify-center">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-cyan-950 p-6 flex items-center justify-center">
       <div className="aurora aurora-1" />
       <div className="aurora aurora-2" />
       <div className="glass-panel w-full max-w-md animate-float">

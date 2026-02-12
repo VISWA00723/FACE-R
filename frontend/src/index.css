@@ -50,7 +50,7 @@ body,
 }
 
 .aurora-2 {
-  background: #a855f7;
+  background: #22c55e;
   bottom: -8rem;
   right: -4rem;
   animation: floaty 9s ease-in-out infinite;
@@ -132,13 +132,13 @@ body,
 
   .btn-primary {
     @apply text-white focus:outline-none focus:ring-2 focus:ring-cyan-300/70 focus:ring-offset-0;
-    background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+    background: linear-gradient(135deg, #06b6d4, #22c55e);
     box-shadow: 0 12px 20px rgba(14, 116, 144, 0.35);
   }
 
   .btn-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 16px 26px rgba(126, 34, 206, 0.4);
+    box-shadow: 0 16px 26px rgba(16, 185, 129, 0.38);
   }
 
   .btn-secondary {
