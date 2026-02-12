@@ -5,8 +5,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import init_db
-from app.api.endpoints import employee, recognition, attendance
+from app.api.endpoints import employee, recognition, attendance, auth
 import logging
+
+from app.core.rate_limit import RateLimitMiddleware
 
 # Configure logging
 logging.basicConfig(
@@ -24,7 +26,10 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Configure CORS
+# Add rate limiting middleware first
+app.add_middleware(RateLimitMiddleware, max_requests=5, window_seconds=60)
+
+# Configure CORS - must be added after other middleware to ensure CORS headers on all responses
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
@@ -42,8 +47,14 @@ async def startup_event():
         logger.info("Database initialized successfully")
     except Exception as e:
         logger.error(f"Error initializing database: {str(e)}")
+        raise
 
 # Include routers
+app.include_router(
+    auth.router,
+    prefix=f"{settings.API_V1_PREFIX}"
+)
+
 app.include_router(
     employee.router,
     prefix=f"{settings.API_V1_PREFIX}",

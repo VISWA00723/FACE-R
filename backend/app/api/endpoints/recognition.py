@@ -14,6 +14,8 @@ from app.services.face_recognition_service import face_recognition_service
 from app.services.faiss_service import faiss_service
 from app.services.attendance_service import attendance_service
 from app.core.config import settings
+from app.core.security import get_current_user
+from app.models.user import User
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +25,8 @@ router = APIRouter()
 @router.post("/recognize_face", response_model=FaceRecognitionResponse)
 async def recognize_face(
     request: FaceRecognitionRequest,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_user)
 ):
     """
     Recognize face from image and log attendance
@@ -63,12 +66,15 @@ async def recognize_face(
                     results = faiss_service.search(query_embedding, k=1)
                     
                     if results:
-                        best_employee_id, distance = results[0]
-                        
+                        best_employee_id, squared_distance = results[0]
+
+                        # FAISS IndexFlatL2 returns squared L2 distance
+                        distance = float(np.sqrt(squared_distance))
+
                         # Check if distance is below threshold
                         if distance < settings.FACE_RECOGNITION_THRESHOLD:
                             employee_id = best_employee_id
-                            confidence = 1.0 - distance
+                            confidence = max(0.0, min(1.0, 1.0 - distance))
                             logger.info(f"FAISS recognition: {employee_id} (distance: {distance:.4f})")
             except Exception as e:
                 logger.error(f"FAISS search failed, falling back to direct comparison: {str(e)}")
@@ -142,7 +148,8 @@ async def recognize_face(
 
 @router.post("/detect_face")
 async def detect_face(
-    request: FaceRecognitionRequest
+    request: FaceRecognitionRequest,
+    _: User = Depends(get_current_user)
 ):
     """
     Detect face in image without recognition (for testing)

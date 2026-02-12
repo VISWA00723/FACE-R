@@ -56,7 +56,7 @@ const Dashboard = () => {
     <div className="space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-100">Dashboard</h1>
         <button
           onClick={fetchData}
           className="btn btn-secondary w-full sm:w-auto"
@@ -89,7 +89,7 @@ const Dashboard = () => {
           title="Currently IN"
           value={todayData?.in_count || 0}
           icon={LogIn}
-          color="bg-purple-500"
+          color="bg-teal-500"
         />
         <StatCard
           title="Left Office (OUT)"
@@ -111,7 +111,7 @@ const Dashboard = () => {
               <Tooltip />
               <Legend />
               <Bar dataKey="present" fill="#10b981" name="Present" />
-              <Bar dataKey="in" fill="#8b5cf6" name="IN" />
+              <Bar dataKey="in" fill="#14b8a6" name="IN" />
               <Bar dataKey="out" fill="#f97316" name="OUT" />
             </BarChart>
           </ResponsiveContainer>
@@ -123,7 +123,7 @@ const Dashboard = () => {
         <h2 className="text-base sm:text-xl font-semibold mb-3 sm:mb-4">Today's Attendance</h2>
         
         {todayData?.attendance_logs.length === 0 ? (
-          <p className="text-gray-500 text-center py-8 text-sm sm:text-base">No attendance records for today</p>
+          <p className="text-slate-400 text-center py-8 text-sm sm:text-base">No attendance records for today</p>
         ) : (
           <>
             {/* Desktop Table View */}
@@ -131,22 +131,22 @@ const Dashboard = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Employee ID
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Department
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     In Time
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Out Time
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Status
                   </th>
                 </tr>
@@ -154,19 +154,19 @@ const Dashboard = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {todayData?.attendance_logs.map((log) => (
                   <tr key={log.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-100">
                       {log.employee_id}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {log.employee_name}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
                       {log.department}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
                       {formatTime(log.in_time)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
                       {formatTime(log.out_time)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -186,8 +186,8 @@ const Dashboard = () => {
               <div key={log.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <h3 className="font-semibold text-gray-900">{log.employee_name}</h3>
-                    <p className="text-sm text-gray-500">{log.employee_id}</p>
+                    <h3 className="font-semibold text-slate-100">{log.employee_name}</h3>
+                    <p className="text-sm text-slate-400">{log.employee_id}</p>
                   </div>
                   <span className={`px-2 py-1 text-xs font-semibold rounded-full whitespace-nowrap ${getStatusColor(log.status)}`}>
                     {log.status}
@@ -195,16 +195,16 @@ const Dashboard = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <p className="text-gray-500 text-xs">Department</p>
-                    <p className="font-medium text-gray-900">{log.department}</p>
+                    <p className="text-slate-400 text-xs">Department</p>
+                    <p className="font-medium text-slate-100">{log.department}</p>
                   </div>
                   <div>
-                    <p className="text-gray-500 text-xs">In Time</p>
-                    <p className="font-medium text-gray-900">{formatTime(log.in_time)}</p>
+                    <p className="text-slate-400 text-xs">In Time</p>
+                    <p className="font-medium text-slate-100">{formatTime(log.in_time)}</p>
                   </div>
                   <div className="col-span-2">
-                    <p className="text-gray-500 text-xs">Out Time</p>
-                    <p className="font-medium text-gray-900">{formatTime(log.out_time)}</p>
+                    <p className="text-slate-400 text-xs">Out Time</p>
+                    <p className="font-medium text-slate-100">{formatTime(log.out_time)}</p>
                   </div>
                 </div>
               </div>
@@ -232,8 +232,8 @@ const StatCard = ({ title, value, icon: Icon, color }: StatCardProps) => (
         <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
       </div>
       <div className="ml-3 sm:ml-4 min-w-0">
-        <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">{title}</p>
-        <p className="text-xl sm:text-2xl font-bold text-gray-900">{value}</p>
+        <p className="text-xs sm:text-sm font-medium text-slate-300 truncate">{title}</p>
+        <p className="text-xl sm:text-2xl font-bold text-slate-100">{value}</p>
       </div>
     </div>
   </div>

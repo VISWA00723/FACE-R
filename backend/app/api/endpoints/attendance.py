@@ -19,6 +19,8 @@ from app.schemas.attendance import (
     AttendanceHistoryResponse
 )
 from app.services.attendance_service import attendance_service
+from app.core.security import require_admin
+from app.models.user import User
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +29,8 @@ router = APIRouter()
 
 @router.get("/attendance_today", response_model=AttendanceTodayResponse)
 async def get_today_attendance(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin)
 ):
     """
     Get today's attendance summary and logs
@@ -101,7 +104,8 @@ async def get_attendance_history(
     employee_id: Optional[str] = Query(None, description="Filter by employee ID"),
     limit: int = Query(100, ge=1, le=1000, description="Maximum records to return"),
     offset: int = Query(0, ge=0, description="Offset for pagination"),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin)
 ):
     """
     Get attendance history with optional filters
@@ -170,7 +174,8 @@ async def export_attendance(
     start_date: Optional[date] = Query(None, description="Start date (YYYY-MM-DD)"),
     end_date: Optional[date] = Query(None, description="End date (YYYY-MM-DD)"),
     employee_id: Optional[str] = Query(None, description="Filter by employee ID"),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin)
 ):
     """
     Export attendance data as CSV
@@ -251,7 +256,8 @@ async def export_attendance(
 async def get_attendance_stats(
     start_date: Optional[date] = Query(None, description="Start date (YYYY-MM-DD)"),
     end_date: Optional[date] = Query(None, description="End date (YYYY-MM-DD)"),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin)
 ):
     """
     Get attendance statistics for a date range

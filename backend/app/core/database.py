@@ -36,4 +36,36 @@ def init_db():
     """
     Initialize database tables
     """
+    # Ensure model metadata is registered before table creation
+    from app.models.employee import Employee  # noqa: F401
+    from app.models.attendance import AttendanceLog  # noqa: F401
+    from app.models.user import User  # noqa: F401
+
     Base.metadata.create_all(bind=engine)
+    ensure_default_users()
+
+
+def ensure_default_users():
+    """Ensure example admin and user accounts exist."""
+    from app.models.user import User
+    from app.core.security import get_password_hash
+
+    db = SessionLocal()
+    try:
+        defaults = [
+            {"username": "admin", "password": "Admin@12345", "role": "admin"},
+            {"username": "user", "password": "User@12345", "role": "user"},
+        ]
+
+        for item in defaults:
+            existing = db.query(User).filter(User.username == item["username"]).first()
+            if existing:
+                continue
+            db.add(User(username=item["username"], password_hash=get_password_hash(item["password"]), role=item["role"], is_active=True))
+
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    finally:
+        db.close()
