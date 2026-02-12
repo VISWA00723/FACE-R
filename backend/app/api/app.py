@@ -5,8 +5,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import init_db
-from app.api.endpoints import employee, recognition, attendance
+from app.api.endpoints import employee, recognition, attendance, auth
 import logging
+
+from app.core.rate_limit import RateLimitMiddleware
 
 # Configure logging
 logging.basicConfig(
@@ -33,6 +35,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.add_middleware(RateLimitMiddleware, max_requests=5, window_seconds=60)
+
 # Initialize database on startup
 @app.on_event("startup")
 async def startup_event():
@@ -45,6 +49,11 @@ async def startup_event():
         raise
 
 # Include routers
+app.include_router(
+    auth.router,
+    prefix=f"{settings.API_V1_PREFIX}"
+)
+
 app.include_router(
     employee.router,
     prefix=f"{settings.API_V1_PREFIX}",

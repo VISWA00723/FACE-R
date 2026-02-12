@@ -7,7 +7,11 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, isInitializing } = useAuth();
+
+  if (isInitializing) {
+    return <div className="min-h-screen app-bg flex items-center justify-center text-slate-200">Loading secure session...</div>;
+  }
 
   if (!isAuthenticated || !user) {
     return <Navigate to="/login" replace />;

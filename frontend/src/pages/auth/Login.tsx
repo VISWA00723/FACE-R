@@ -2,7 +2,6 @@ import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogIn, ShieldCheck, UserCircle2 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import type { UserRole } from '@/types/auth';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,7 +9,6 @@ const Login = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<UserRole>('user');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,46 +17,26 @@ const Login = () => {
     try {
       setLoading(true);
       setError(null);
-      await login(username.trim(), password, role);
-      navigate(role === 'admin' ? '/admin' : '/user', { replace: true });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
+      await login(username.trim(), password);
+      navigate('/', { replace: true });
+    } catch (err: any) {
+      setError(err?.response?.data?.detail || err?.message || 'Login failed');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-cyan-950 p-6 flex items-center justify-center">
-      <div className="aurora aurora-1" />
-      <div className="aurora aurora-2" />
+    <div className="min-h-screen relative overflow-hidden login-bg p-6 flex items-center justify-center">
+      <div className="orb orb-a" />
+      <div className="orb orb-b" />
       <div className="glass-panel w-full max-w-md animate-float">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-white">Face-R Access Portal</h1>
-          <p className="text-slate-300 mt-2 text-sm">Secure login for users and administrators</p>
+          <h1 className="text-3xl font-bold text-white">Face-R Secure Login</h1>
+          <p className="text-slate-300 mt-2 text-sm">Real-time authentication with database-backed users.</p>
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-          <div>
-            <label className="label text-slate-200">Role</label>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                className={`btn ${role === 'user' ? 'btn-primary' : 'btn-secondary'}`}
-                onClick={() => setRole('user')}
-              >
-                <UserCircle2 className="w-4 h-4 mr-2" /> User
-              </button>
-              <button
-                type="button"
-                className={`btn ${role === 'admin' ? 'btn-primary' : 'btn-secondary'}`}
-                onClick={() => setRole('admin')}
-              >
-                <ShieldCheck className="w-4 h-4 mr-2" /> Admin
-              </button>
-            </div>
-          </div>
-
           <div>
             <label className="label text-slate-200">Username</label>
             <input
@@ -66,6 +44,7 @@ const Login = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter username"
+              autoComplete="username"
               required
             />
           </div>
@@ -78,6 +57,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter password"
+              autoComplete="current-password"
               required
             />
           </div>
@@ -89,9 +69,9 @@ const Login = () => {
           </button>
         </form>
 
-        <div className="mt-5 p-3 rounded-lg bg-slate-900/50 border border-slate-700 text-xs text-slate-300">
-          <p><strong>User:</strong> user / user123</p>
-          <p><strong>Admin:</strong> admin / admin123</p>
+        <div className="mt-5 p-3 rounded-lg bg-slate-900/50 border border-slate-700 text-xs text-slate-300 space-y-1">
+          <p className="flex items-center gap-2"><ShieldCheck className="w-3.5 h-3.5 text-lime-300" /> <strong>Admin:</strong> admin / Admin@12345</p>
+          <p className="flex items-center gap-2"><UserCircle2 className="w-3.5 h-3.5 text-sky-300" /> <strong>User:</strong> user / User@12345</p>
         </div>
       </div>
     </div>

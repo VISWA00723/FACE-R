@@ -13,6 +13,8 @@ from app.schemas.employee import EmployeeCreate, EmployeeResponse, EmployeeList
 from app.services.face_recognition_service import face_recognition_service
 from app.services.faiss_service import faiss_service
 from app.core.config import settings
+from app.core.security import require_admin
+from app.models.user import User
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +24,8 @@ router = APIRouter()
 @router.post("/register_employee", response_model=EmployeeResponse, status_code=status.HTTP_201_CREATED)
 async def register_employee(
     employee_data: EmployeeCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin)
 ):
     """
     Register a new employee with face images
@@ -110,7 +113,8 @@ async def register_employee(
 async def get_all_employees(
     skip: int = 0,
     limit: int = 100,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin)
 ):
     """
     Get all registered employees
@@ -137,7 +141,8 @@ async def get_all_employees(
 @router.get("/employees/{employee_id}", response_model=EmployeeResponse)
 async def get_employee(
     employee_id: str,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin)
 ):
     """
     Get employee details by ID
@@ -169,7 +174,8 @@ async def get_employee(
 @router.delete("/employees/{employee_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_employee(
     employee_id: str,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin)
 ):
     """
     Delete an employee

@@ -12,7 +12,8 @@ import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 
 const RootRedirect = () => {
-  const { user } = useAuth();
+  const { user, isInitializing } = useAuth();
+  if (isInitializing) return <div className="min-h-screen app-bg flex items-center justify-center text-slate-200">Loading secure session...</div>;
   if (!user) return <Navigate to="/login" replace />;
   return <Navigate to={user.role === 'admin' ? '/admin' : '/user'} replace />;
 };
