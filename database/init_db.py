@@ -4,6 +4,7 @@ Creates database tables and initial setup
 """
 import sys
 import os
+import re
 from pathlib import Path
 
 # Add parent directory to path
@@ -32,7 +33,9 @@ def create_database():
     db_host = os.getenv("DB_HOST", "localhost")
     db_port = os.getenv("DB_PORT", "5432")
     db_name = os.getenv("DB_NAME", "face_recognition_db")
-    
+    if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", db_name):
+        raise ValueError("Invalid DB_NAME format. Use alphanumeric and underscore only.")
+
     # Connect to PostgreSQL default database
     default_db_url = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/postgres"
     
@@ -43,7 +46,7 @@ def create_database():
         with engine.connect() as conn:
             # Check if database exists
             result = conn.execute(
-                text(f"SELECT 1 FROM pg_database WHERE datname = '{db_name}'")
+                text("SELECT 1 FROM pg_database WHERE datname = :db_name"), {"db_name": db_name}
             )
             exists = result.fetchone()
             
@@ -124,6 +127,42 @@ def verify_setup():
         raise
 
 
+
+def seed_default_users():
+    """Seed example admin and user accounts with hashed passwords."""
+    from app.core.database import SessionLocal
+    from app.core.security import get_password_hash
+    from app.models.user import User
+
+    db = SessionLocal()
+    try:
+        examples = [
+            {"username": "admin", "password": "Admin@12345", "role": "admin"},
+            {"username": "user", "password": "User@12345", "role": "user"},
+        ]
+
+        for item in examples:
+            existing = db.query(User).filter(User.username == item["username"]).first()
+            if existing:
+                continue
+
+            db.add(
+                User(
+                    username=item["username"],
+                    password_hash=get_password_hash(item["password"]),
+                    role=item["role"],
+                    is_active=True,
+                )
+            )
+
+        db.commit()
+        logger.info("Default users seeded (if missing): admin/Admin@12345 and user/User@12345 accounts")
+    except Exception:
+        db.rollback()
+        raise
+    finally:
+        db.close()
+
 def main():
     """Main initialization function"""
     try:
@@ -140,7 +179,10 @@ def main():
         init_tables()
         
         # Step 3: Verify setup
-        logger.info("\n[Step 3/3] Verifying setup...")
+        logger.info("\n[Step 3/4] Seeding default users...")
+        seed_default_users()
+
+        logger.info("\n[Step 4/4] Verifying setup...")
         verify_setup()
         
         logger.info("\n" + "=" * 60)

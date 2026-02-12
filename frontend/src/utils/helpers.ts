@@ -91,7 +91,7 @@ export const base64ToBlob = (base64: string, contentType = ''): Blob => {
 export const getStatusColor = (status: string): string => {
   switch (status.toUpperCase()) {
     case 'IN':
-      return 'bg-green-100 text-green-800';
+      return 'bg-sky-100 text-sky-800';
     case 'OUT':
       return 'bg-blue-100 text-blue-800';
     case 'ABSENT':
