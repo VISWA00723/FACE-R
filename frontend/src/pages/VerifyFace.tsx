@@ -104,8 +104,8 @@ const VerifyFace = () => {
   return (
     <div className="w-full">
       <div className="mb-4 sm:mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Verify Face Detection</h1>
-        <p className="text-sm sm:text-base text-gray-600 mt-2">
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-100">Verify Face Detection</h1>
+        <p className="text-sm sm:text-base text-slate-300 mt-2">
           Test face detection and recognition without marking attendance
         </p>
       </div>
@@ -118,7 +118,7 @@ const VerifyFace = () => {
           {!capturedImage && !showWebcam && (
             <div className="text-center py-12">
               <Camera className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-              <p className="text-gray-600 mb-4">Capture an image to verify face detection</p>
+              <p className="text-slate-300 mb-4">Capture an image to verify face detection</p>
               <button
                 onClick={() => setShowWebcam(true)}
                 className="btn btn-primary"
@@ -211,7 +211,7 @@ const VerifyFace = () => {
           <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Verification Results</h2>
 
           {!result ? (
-            <div className="text-center py-12 text-gray-500">
+            <div className="text-center py-12 text-slate-400">
               <AlertTriangle className="w-16 h-16 mx-auto mb-4 text-gray-400" />
               <p>Capture and verify an image to see results</p>
             </div>
@@ -220,12 +220,12 @@ const VerifyFace = () => {
               {/* Face Detection Status */}
               <div className={`p-4 rounded-lg border-2 ${
                 result.faceDetected
-                  ? 'bg-green-50 border-green-200'
+                  ? 'bg-sky-50 border-sky-200'
                   : 'bg-red-50 border-red-200'
               }`}>
                 <div className="flex items-start">
                   {result.faceDetected ? (
-                    <CheckCircle className="w-6 h-6 text-green-600 mr-3 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-6 h-6 text-sky-600 mr-3 flex-shrink-0 mt-0.5" />
                   ) : (
                     <XCircle className="w-6 h-6 text-red-600 mr-3 flex-shrink-0 mt-0.5" />
                   )}
@@ -234,7 +234,7 @@ const VerifyFace = () => {
                       {result.faceDetected ? 'Face Detected ✓' : 'No Face Detected ✗'}
                     </h3>
                     <p className={`text-sm ${
-                      result.faceDetected ? 'text-green-700' : 'text-red-700'
+                      result.faceDetected ? 'text-sky-700' : 'text-red-700'
                     }`}>
                       {result.faceDetected
                         ? 'A face was successfully detected in the image'
@@ -271,21 +271,21 @@ const VerifyFace = () => {
                         <div className="bg-white rounded-lg p-3 space-y-2">
                           <div className="grid grid-cols-2 gap-3 text-sm">
                             <div>
-                              <p className="text-gray-500 text-xs">Employee ID</p>
-                              <p className="font-semibold text-gray-900">{result.employee.id}</p>
+                              <p className="text-slate-400 text-xs">Employee ID</p>
+                              <p className="font-semibold text-slate-100">{result.employee.id}</p>
                             </div>
                             <div>
-                              <p className="text-gray-500 text-xs">Name</p>
-                              <p className="font-semibold text-gray-900">{result.employee.name}</p>
+                              <p className="text-slate-400 text-xs">Name</p>
+                              <p className="font-semibold text-slate-100">{result.employee.name}</p>
                             </div>
                             <div>
-                              <p className="text-gray-500 text-xs">Department</p>
-                              <p className="font-semibold text-gray-900">{result.employee.department}</p>
+                              <p className="text-slate-400 text-xs">Department</p>
+                              <p className="font-semibold text-slate-100">{result.employee.department}</p>
                             </div>
                             {result.confidence && (
                               <div>
-                                <p className="text-gray-500 text-xs">Confidence</p>
-                                <p className="font-semibold text-gray-900">
+                                <p className="text-slate-400 text-xs">Confidence</p>
+                                <p className="font-semibold text-slate-100">
                                   {(result.confidence * 100).toFixed(1)}%
                                 </p>
                               </div>

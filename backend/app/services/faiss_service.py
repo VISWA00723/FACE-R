@@ -169,9 +169,42 @@ class FAISSService:
             logger.error(f"Error saving FAISS index: {str(e)}")
     
     def rebuild_index_from_db(self):
-        """Rebuild FAISS index from database (to be implemented with DB access)"""
-        logger.warning("Rebuild from DB not implemented yet")
-        pass
+        """Rebuild FAISS index from database."""
+        try:
+            from app.core.database import SessionLocal
+            from app.models.employee import Employee
+
+            logger.info("Rebuilding FAISS index from database...")
+            db = SessionLocal()
+            try:
+                employees = db.query(Employee.employee_id, Employee.embedding_vector).all()
+
+                # Reset index and metadata
+                self.create_index()
+
+                for employee_id, embedding_vector in employees:
+                    if embedding_vector is None:
+                        continue
+
+                    embedding = np.array(embedding_vector, dtype='float32')
+                    if embedding.shape[0] != self.dimension:
+                        logger.warning(
+                            "Skipping employee %s due to invalid embedding dimension %s",
+                            employee_id,
+                            embedding.shape[0],
+                        )
+                        continue
+
+                    self.index.add(embedding.reshape(1, -1))
+                    self.employee_ids.append(employee_id)
+
+                self.save_index()
+                logger.info("Rebuilt FAISS index with %d vectors", self.index.ntotal)
+            finally:
+                db.close()
+        except Exception as e:
+            logger.error(f"Error rebuilding FAISS index from DB: {str(e)}")
+            raise
     
     def delete_embedding(self, employee_id: str):
         """

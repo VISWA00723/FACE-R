@@ -10,10 +10,13 @@ import type {
   FaceRecognitionResponse,
   AttendanceStats,
 } from '@/types';
+import type { AuthUser } from '@/types/auth';
 
 // Use relative URL when VITE_API_URL is not set (works with proxy)
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 const API_V1 = API_BASE_URL ? `${API_BASE_URL}/api/v1` : '/api/v1';
+
+export const AUTH_TOKEN_KEY = 'face-r-auth-token';
 
 // Create axios instance
 const api = axios.create({
@@ -22,6 +25,39 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export interface LoginResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  user: {
+    id: number;
+    username: string;
+    role: 'admin' | 'user';
+    is_active: boolean;
+    created_at: string;
+  };
+}
+
+export const authAPI = {
+  login: async (username: string, password: string): Promise<LoginResponse> => {
+    const response = await api.post<LoginResponse>('/auth/login', { username, password });
+    return response.data;
+  },
+
+  me: async (): Promise<AuthUser> => {
+    const response = await api.get('/auth/me');
+    return response.data;
+  },
+};
 
 // Employee APIs
 export const employeeAPI = {
