@@ -26,7 +26,10 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Configure CORS
+# Add rate limiting middleware first
+app.add_middleware(RateLimitMiddleware, max_requests=5, window_seconds=60)
+
+# Configure CORS - must be added after other middleware to ensure CORS headers on all responses
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
@@ -34,8 +37,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-app.add_middleware(RateLimitMiddleware, max_requests=5, window_seconds=60)
 
 # Initialize database on startup
 @app.on_event("startup")

@@ -17,6 +17,10 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self.requests = defaultdict(deque)
 
     async def dispatch(self, request: Request, call_next):
+        # Skip rate limiting for OPTIONS requests (CORS preflight)
+        if request.method == "OPTIONS":
+            return await call_next(request)
+            
         if request.url.path.startswith(self.protected_prefix):
             client_ip = request.client.host if request.client else "unknown"
             key = f"{client_ip}:{request.url.path}"

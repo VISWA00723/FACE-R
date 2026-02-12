@@ -69,10 +69,10 @@ const Login = () => {
           </button>
         </form>
 
-        <div className="mt-5 p-3 rounded-lg bg-slate-900/50 border border-slate-700 text-xs text-slate-300 space-y-1">
+        {/* <div className="mt-5 p-3 rounded-lg bg-slate-900/50 border border-slate-700 text-xs text-slate-300 space-y-1">
           <p className="flex items-center gap-2"><ShieldCheck className="w-3.5 h-3.5 text-lime-300" /> <strong>Admin:</strong> admin / Admin@12345</p>
           <p className="flex items-center gap-2"><UserCircle2 className="w-3.5 h-3.5 text-sky-300" /> <strong>User:</strong> user / User@12345</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
