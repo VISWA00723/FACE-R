@@ -63,12 +63,15 @@ async def recognize_face(
                     results = faiss_service.search(query_embedding, k=1)
                     
                     if results:
-                        best_employee_id, distance = results[0]
-                        
+                        best_employee_id, squared_distance = results[0]
+
+                        # FAISS IndexFlatL2 returns squared L2 distance
+                        distance = float(np.sqrt(squared_distance))
+
                         # Check if distance is below threshold
                         if distance < settings.FACE_RECOGNITION_THRESHOLD:
                             employee_id = best_employee_id
-                            confidence = 1.0 - distance
+                            confidence = max(0.0, min(1.0, 1.0 - distance))
                             logger.info(f"FAISS recognition: {employee_id} (distance: {distance:.4f})")
             except Exception as e:
                 logger.error(f"FAISS search failed, falling back to direct comparison: {str(e)}")

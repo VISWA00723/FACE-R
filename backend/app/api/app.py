@@ -42,6 +42,7 @@ async def startup_event():
         logger.info("Database initialized successfully")
     except Exception as e:
         logger.error(f"Error initializing database: {str(e)}")
+        raise
 
 # Include routers
 app.include_router(
