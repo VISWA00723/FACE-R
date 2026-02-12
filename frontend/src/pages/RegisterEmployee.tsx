@@ -81,7 +81,7 @@ const RegisterEmployee = () => {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">Register Employee</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-4 sm:mb-6">Register Employee</h1>
 
       {message && (
         <div
@@ -202,7 +202,7 @@ const RegisterEmployee = () => {
                   </button>
                 </div>
               </div>
-              <p className="text-xs sm:text-sm text-gray-600 mt-2 text-center">
+              <p className="text-xs sm:text-sm text-slate-300 mt-2 text-center">
                 Position your face in the camera and capture from different angles
               </p>
             </div>

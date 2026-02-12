@@ -52,8 +52,8 @@ const EmployeeList = () => {
     <div className="space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Employees</h1>
-          <p className="text-sm sm:text-base text-gray-600 mt-1">Total: {total} employees</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-100">Employees</h1>
+          <p className="text-sm sm:text-base text-slate-300 mt-1">Total: {total} employees</p>
         </div>
         <button
           onClick={fetchEmployees}
@@ -75,7 +75,7 @@ const EmployeeList = () => {
             {error}
           </div>
         ) : employees.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-slate-400">
             <User className="w-16 h-16 mx-auto mb-4 text-gray-400" />
             <p className="text-lg">No employees registered</p>
             <p className="text-sm">Start by registering your first employee</p>
@@ -87,22 +87,22 @@ const EmployeeList = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Employee ID
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Department
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Images Count
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Registered On
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
@@ -110,24 +110,24 @@ const EmployeeList = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {employees.map((employee) => (
                   <tr key={employee.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-100">
                       {employee.employee_id}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                       {employee.name}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
                       {employee.department}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                         {employee.image_count} images
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
                       {formatDateTime(employee.created_at)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
                       <button
                         onClick={() => handleDelete(employee.employee_id, employee.name)}
                         disabled={deletingId === employee.employee_id}
@@ -153,8 +153,8 @@ const EmployeeList = () => {
               <div key={employee.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 text-lg">{employee.name}</h3>
-                    <p className="text-sm text-gray-500 mt-1">{employee.employee_id}</p>
+                    <h3 className="font-semibold text-slate-100 text-lg">{employee.name}</h3>
+                    <p className="text-sm text-slate-400 mt-1">{employee.employee_id}</p>
                   </div>
                   <button
                     onClick={() => handleDelete(employee.employee_id, employee.name)}
@@ -171,18 +171,18 @@ const EmployeeList = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <p className="text-gray-500 text-xs">Department</p>
-                    <p className="font-medium text-gray-900">{employee.department}</p>
+                    <p className="text-slate-400 text-xs">Department</p>
+                    <p className="font-medium text-slate-100">{employee.department}</p>
                   </div>
                   <div>
-                    <p className="text-gray-500 text-xs">Images</p>
+                    <p className="text-slate-400 text-xs">Images</p>
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                       {employee.image_count}
                     </span>
                   </div>
                   <div className="col-span-2">
-                    <p className="text-gray-500 text-xs">Registered On</p>
-                    <p className="font-medium text-gray-900">{formatDateTime(employee.created_at)}</p>
+                    <p className="text-slate-400 text-xs">Registered On</p>
+                    <p className="font-medium text-slate-100">{formatDateTime(employee.created_at)}</p>
                   </div>
                 </div>
               </div>
